@@ -13,7 +13,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul *ngIf="loggedIn" class="navbar-nav me-auto mb-2 mb-md-0">
+      <ul *ngIf="accountService.currentUser$ | async" class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
           <a class="nav-link">Matches</a>
         </li>
@@ -28,7 +28,7 @@
         </li>
       </ul>
 
-      <div *ngIf="loggedIn" class="btn-group" dropdown>
+      <div *ngIf="accountService.currentUser$ | async" class="btn-group" dropdown>
         <button
           type="button"
           class="btn btn-secondary dropdown-toggle"
@@ -45,8 +45,12 @@
         </ul>
       </div>
 
+      <!-- Async pipe is used to subscibe to an observable, and when the component is destroyed, or no use, 
+        it will destroy the subscription to the observable
+        Note: You cannot use '!' in observable, that's why (accountService.currentUser$ | async) === null
+      -->
       <form
-      *ngIf="!loggedIn"
+      *ngIf="(accountService.currentUser$ | async) === null"
         #loginForm="ngForm"
         class="d-flex ms-auto"
         (ngSubmit)="login()"
