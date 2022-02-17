@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
   <div class="container">
-    <a class="navbar-brand">Dating App</a>
+    <a class="navbar-brand" routerLink="/" routerLinkActive="active">Dating App</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,36 +13,37 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul *ngIf="accountService.currentUser$ | async" class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
-          <a class="nav-link">Matches</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Lists</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">Messages</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="logout()">Logout</a>
-        </li>
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <ng-container *ngIf="accountService.currentUser$ | async">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
+          </li>
+        </ng-container>
       </ul>
 
-      <div *ngIf="accountService.currentUser$ | async" class="btn-group" dropdown>
-        <button
+      <div class="btn-group" dropdown>
+        <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+          <button
           type="button"
-          class="btn btn-secondary dropdown-toggle"
+          class="btn dropdown-toggle"
           data-bs-toggle="dropdown"
           aria-expanded="false"
           dropdownToggle
-        >
-          Welcome User
-        </button>
-        <ul class="dropdown-menu mt-3" *dropdownMenu>
-          <li><a class="dropdown-item">Edit</a></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-        </ul>
+          >
+            Welcome {{ user.username | titlecase }}
+          </button>
+          <ul class="dropdown-menu mt-3" *dropdownMenu>
+            <li><a class="dropdown-item">Edit</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          </ul>
+        </ng-container>
       </div>
 
       <!-- Async pipe is used to subscibe to an observable, and when the component is destroyed, or no use, 
@@ -70,7 +71,7 @@
           type="password"
           placeholder="Password"
         />
-        <button class="btn btn-outline-success" type="submit">Login</button>
+        <button class="btn btn-outline-dark" type="submit">Login</button>
       </form>
     </div>
   </div>
